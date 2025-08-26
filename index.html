@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sejarah Indonesia 1930–1945</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Serif+4&display=swap" rel="stylesheet"/>
+  <style>
+    :root{ --merah:#b91c1c; --putih:#fffaf2; --tinta:#2c1f1f; --bayang:#00000020; }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0}
+    body{font-family:'Source Serif 4',serif; color:var(--tinta); background:var(--putih); line-height:1.7}
+
+    /* === Background khas Indonesia + parallax ringan === */
+    .bg-dekorasi{ position:fixed; inset:0; z-index:-2; pointer-events:none; background:
+      url('Garuda_Pancasila_Emblem 1.jpg') center 150%/100% no-repeat,
+      linear-gradient(135deg,#fff6f0,#ffe7e7);
+      opacity:.08;
+      transform:translateZ(0);
+    }
+    /* layer asap tipis biar vintage */
+    .grain{position:fixed; inset:0; z-index:-1; background-image:radial-gradient(#00000014 1px,transparent 1px); background-size:3px 3px; mix-blend-mode:multiply; opacity:.2; pointer-events:none}
+
+    header{position:relative; text-align:center; padding:26px 16px 22px; background:var(--merah); color:#fff; box-shadow:0 2px 10px var(--bayang)}
+    .judul-perjuangan{font-family:'Playfair Display',serif; font-size: clamp(28px,5vw,56px); letter-spacing:3px; font-weight:800; text-transform:uppercase; text-shadow:3px 3px 0 #7a0f0f, 7px 7px 0 #000}
+    header p{margin:.25rem 0 0; opacity:.95;font-size: 20px}
+
+   
+    /* === Carousel === */
+    .carousel{max-width:1024px; margin:18px auto; position:relative; overflow:hidden; border-radius:14px; box-shadow:0 6px 18px var(--bayang)}
+    .slides{display:flex; transition:transform .6s ease}
+    .slide{min-width:100%; position:relative}
+    .slide img{width:100%; height:420px; object-fit:cover; filter:sepia(.28) contrast(1.08)}
+    .caption{position:absolute; left:18px; bottom:18px; background:rgba(0,0,0,.6); color:#fff; padding:10px 14px; border-radius:10px; font-size:15px}
+    .caption .hl{background:var(--merah); padding:2px 6px; border-radius:5px}
+    .controls{position:absolute; inset:0; display:flex; justify-content:space-between; align-items:center; padding:0 6px}
+    .controls button{border:none; background:rgba(0,0,0,.45); color:#fff; padding:8px 12px; border-radius:10px; cursor:pointer}
+
+    /* === Timeline === */
+    .timeline{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; max-width:960px; margin:18px auto}
+    .timeline button{padding:10px 16px; border-radius:22px; border:2px solid var(--merah); color:var(--merah); background:#fff; cursor:pointer; font-weight:600}
+    .timeline button.active,.timeline button:hover{background:var(--merah); color:#fff}
+
+    /* === Konten === */
+    #content{max-width:960px; margin:18px auto 40px; background:#fff; border-radius:14px; box-shadow:0 4px 14px var(--bayang); padding:22px}
+    #content h2{font-family:'Playfair Display',serif; color:var(--merah); margin:.2rem 0 .6rem}
+    #content h3{font-family:'Playfair Display',serif; margin:1rem 0 .4rem}
+    #content ul{margin:.2rem 0 1rem 1.1rem}
+    .tokoh{color:var(--merah); font-weight:800; text-decoration:underline; cursor:pointer}
+    figure{margin:16px 0; border:1px dashed #eab0b0; border-radius:12px; overflow:hidden; background:#fff}
+    figure img{width:100%; display:block; filter:sepia(.22) contrast(1.05)}
+    figcaption{padding:8px 12px; background:#fff5f5; color:#5b1a1a; font-size:.92rem}
+
+    /* === Modal Tokoh === */
+    .modal{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; justify-content:center; align-items:center}
+    .modal.show{display:flex}
+    .modal-content{background:#fff; padding:20px; border-radius:14px; max-width:680px; width:min(92vw,680px); display:flex; gap:18px; position:relative; box-shadow:0 8px 28px var(--bayang)}
+    .modal-content img{width:160px; height:210px; object-fit:cover; border-radius:10px; border:2px solid var(--merah)}
+    .modal-info{flex:1}
+    .modal-content h3{margin:.2rem 0 .4rem; color:var(--merah)}
+    .close{position:absolute; right:10px; top:10px; font-size:22px; cursor:pointer}
+
+    @media (max-width:640px){ .modal-content{flex-direction:column; align-items:center; text-align:center} }
+  </style>
+</head>
+<body>
+  <div class="bg-dekorasi" id="bg"></div>
+  <div class="grain"></div>
+  <div class="obor"><div class="api"></div></div>
+
+  <header>
+    <h1 class="judul-perjuangan">Sejarah Indonesia 1930–1945</h1>
+    <p>Dari Persiapan Perang hingga Proklamasi Kemerdekaan</p>
+    <div class="flag" aria-hidden="true"></div>
+  </header>
+
+  <!-- === Carousel === -->
+  <div class="carousel">
+    <div class="slides" id="slides">
+      <div class="slide">
+        <img src=" Imperial_Japanese_Army_tankette_in_Manchuria.jpg" alt="Ekspansi Jepang di Manchuria"/>
+        <div class="caption">Ekspansi Jepang <span class="hl">1930-an</span></div>
+      </div>
+      <div class="slide">
+        <img src="bpupki.jpg" alt="Propaganda Asia untuk Asia"/>
+        <div class="caption"> BPUPKI <span class="hl">Pembentukan BPUPKI 1945</span></div>
+      </div>
+      <div class="slide">
+        <img src="PearlHarborraid.WEBP" alt="Serangan ke Pearl Harbor 1941"/>
+        <div class="caption">Serangan <span class="hl">Pearl Harbor</span> 1941</div>
+      </div>
+      <div class="slide">
+        <img src="Indonesian_Independence_Proclamation_1945.png" alt="Proklamasi Kemerdekaan 1945"/>
+        <div class="caption">Proklamasi <span class="hl">1945</span></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button type="button" onclick="prevSlide()" aria-label="Sebelumnya">‹</button>
+      <button type="button" onclick="nextSlide()" aria-label="Berikutnya">›</button>
+    </div>
+  </div>
+
+  <!-- === Timeline === -->
+  <nav class="timeline" aria-label="Navigasi kronologi">
+    <button onclick="showContent('1930')" class="active">1930</button>
+    <button onclick="showContent('1942')">1942</button>
+    <button onclick="showContent('1943')">1943</button>
+    <button onclick="showContent('1945')">1945</button>
+  </nav>
+
+  <!-- === Konten Dinamis === -->
+  <main id="content" aria-live="polite"></main>
+
+  <!-- === Modal Tokoh === -->
+  <div class="modal" id="modalTokoh" role="dialog" aria-modal="true" aria-labelledby="namaTokoh">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()" aria-label="Tutup">&times;</span>
+      <img id="fotoTokoh" src="" alt="Foto Tokoh"/>
+      <div class="modal-info">
+        <h3 id="namaTokoh">Nama Tokoh</h3>
+        <p><strong>Lahir:</strong> <span id="lahirTokoh"></span></p>
+        <p><strong>Wafat:</strong> <span id="wafatTokoh"></span></p>
+        <p id="bioTokoh"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Parallax ringan untuk layer garuda/batik/mega mendung
+    const bg = document.getElementById('bg');
+    window.addEventListener('scroll', ()=>{
+      const y = window.scrollY;
+      bg.style.backgroundPosition = `center ${20 + y*0.05}% , left ${y*0.2}px , right ${y*0.15}px , center`;
+    });
+
+    // ====== DATA SEJARAH (LENGKAP) ======
+   const sejarah = {
+  "1930": `
+    <h2>Persiapan Militer & Ekspansi Jepang (1930-an)</h2>
+    <h3>Latar Belakang</h3>
+    <p>Pada dekade 1930-an, Jepang menghadapi krisis ekonomi akibat Depresi Besar dan keterbatasan sumber daya alam. Jepang lalu memperluas wilayahnya di Asia untuk memenuhi kebutuhan industri perang.</p>
+
+    <h3>Peristiwa Penting</h3>
+    <ul>
+      <li><strong>1931:</strong> Pendudukan <em>Manchuria</em>, berdirinya negara boneka <em>Manchukuo</em>.</li>
+      <li><strong>1937:</strong> Meletus <em>Perang Tiongkok–Jepang Kedua</em>, menelan banyak korban sipil.</li>
+      <li><strong>1939:</strong> Pecahnya Perang Dunia II di Eropa, Belanda ikut sibuk menghadapi Jerman.</li>
+      <li><strong>1940:</strong> Jepang mengincar Asia Tenggara, terutama minyak di Sumatra & Kalimantan.</li>
+    </ul>
+
+    <h3>Tokoh Terkait</h3>
+    <p>Di Indonesia, sejumlah tokoh nasionalis mulai memperhatikan perkembangan situasi dunia, antara lain
+      <span class='tokoh' data-nama='Soekarno'>Soekarno</span> dan 
+      <span class='tokoh' data-nama='Mohammad Hatta'>Mohammad Hatta</span>, 
+      yang kelak berperan besar saat Jepang masuk.</p>
+
+    <h3>Dampak</h3>
+    <p>Infiltrasi intelijen Jepang ke Hindia Belanda semakin intens, semboyan <em>“Asia untuk Asia”</em> mulai diperkenalkan, rakyat kecil perlahan simpati karena barang-barang Jepang murah dan mudah dijangkau.</p>
+  `,
+
+  "1942": `
+    <h2>Pendudukan Jepang Dimulai (1942)</h2>
+    <h3>Invasi & Jatuhnya Hindia Belanda</h3>
+    <ul>
+      <li><strong>Januari–Februari 1942:</strong> Jepang menyerang Tarakan, Balikpapan, dan Palembang – semua pusat minyak penting.</li>
+      <li><strong>Maret 1942:</strong> Pertempuran Laut Jawa berakhir dengan kekalahan Belanda dan sekutunya.</li>
+      <li><strong>8 Maret 1942:</strong> Belanda menyerah tanpa syarat di Kalijati, Subang, Jawa Barat.</li>
+    </ul>
+
+    <h3>Struktur Pemerintahan</h3>
+    <ul>
+      <li>Jawa-Madura → di bawah Tentara ke-16.</li>
+      <li>Sumatra → di bawah Tentara ke-25.</li>
+      <li>Indonesia Timur → di bawah Angkatan Laut Jepang.</li>
+    </ul>
+
+    <h3>Tokoh & Peran</h3>
+    <p>Sejumlah pemimpin nasional mulai berinteraksi dengan Jepang, meski dengan strategi berbeda:</p>
+    <ul>
+      <li><span class='tokoh' data-nama='Soekarno'>Soekarno</span> → mendukung mobilisasi massa untuk kepentingan Jepang, namun juga memanfaatkannya untuk menanamkan nasionalisme.</li>
+      <li><span class='tokoh' data-nama='Mohammad Hatta'>Mohammad Hatta</span> → berhati-hati, menekankan pendidikan politik rakyat.</li>
+      <li><span class='tokoh' data-nama='Sutan Syahrir'>Sutan Syahrir</span> → bergerak bawah tanah, menolak kerja sama dengan Jepang.</li>
+      <li><span class='tokoh' data-nama='Ahmad Subardjo'>Ahmad Subardjo</span> → berperan sebagai penghubung diplomasi dan komunikasi dengan Jepang.</li>
+    </ul>
+
+    <h3>Dampak Sosial & Ekonomi</h3>
+    <ul>
+      <li>Mobilisasi tenaga kerja <strong>romusha</strong>, jutaan rakyat dipaksa bekerja berat.</li>
+      <li>Sensor ketat media, budaya Jepang dipaksakan (lagu, bahasa, militerisme).</li>
+      <li>Kekurangan pangan parah akibat perampasan hasil bumi.</li>
+    </ul>
+  `,
+
+  "1943": `
+    <h2>Masa Pendudukan: Organisasi & Militer (1943)</h2>
+    <h3>Organisasi yang Dibentuk Jepang</h3>
+    <ul>
+      <li><strong>PETA (Pembela Tanah Air):</strong> melatih ribuan pemuda Indonesia sebagai prajurit semi-militer.</li>
+      <li><strong>Heiho:</strong> pemuda Indonesia yang masuk langsung ke militer Jepang.</li>
+      <li><strong>Seinendan:</strong> organisasi pemuda 14–22 tahun untuk disiplin & baris-berbaris.</li>
+      <li><strong>Keibodan:</strong> pertahanan sipil beranggotakan pemuda & warga biasa.</li>
+      <li><strong>PUTERA → Jawa Hokokai:</strong> wadah resmi pengerahan rakyat dengan tokoh utama Soekarno, Hatta, Ki Hajar Dewantara, dan KH Mas Mansyur.</li>
+    </ul>
+
+    <h3>Tokoh Penting</h3>
+    <ul>
+      <li><span class='tokoh' data-nama='Ki Hajar Dewantara'>Ki Hajar Dewantara</span> → tetap menekankan pendidikan sebagai sarana membangun jiwa kebangsaan.</li>
+      <li><span class='tokoh' data-nama='Soekarno'>Soekarno</span> → semakin menjadi orator utama Jepang, namun sekaligus menyelipkan semangat merdeka.</li>
+      <li><span class='tokoh' data-nama='Mohammad Hatta'>Mohammad Hatta</span> → mengembangkan gagasan ekonomi rakyat berbasis koperasi.</li>
+    </ul>
+
+    <h3>Dampak</h3>
+    <ul>
+      <li>PETA menjadi cikal bakal Tentara Nasional Indonesia (TNI).</li>
+      <li>Kaderisasi pemuda melahirkan kesadaran politik & militer yang kelak digunakan melawan Belanda.</li>
+      <li>Walau menderita, rakyat mulai melihat peluang kemerdekaan semakin nyata.</li>
+    </ul>
+  `,
+
+  "1945": `
+    <h2>Menuju Proklamasi & Kemerdekaan (1945)</h2>
+    <h3>BPUPKI</h3>
+    <p> 
+    <strong>
+Latar Belakang </strong>: BPUPKI (Badan Penyelidik Usaha-usaha Persiapan Kemerdekaan Indonesia) dibentuk oleh Jepang pada 29 April 1945, di tengah situasi perang yang semakin genting bagi Jepang. Mereka ingin mendapatkan dukungan dari rakyat Indonesia dengan menjanjikan kemerdekaan. 
+
+Tujuan: Tugas utama BPUPKI adalah menyelidiki dan mempelajari hal-hal yang berkaitan dengan pembentukan negara Indonesia, termasuk merumuskan dasar negara. 
+
+Anggota: BPUPKI terdiri dari 67 anggota, yang sebagian besar adalah orang Indonesia, dengan beberapa wakil dari Jepang. Ketua BPUPKI adalah Dr. K.R.T. Radjiman Wedyodiningrat. 
+
+Sidang Pertama: Sidang pertama BPUPKI diadakan pada 29 Mei 1945, di Gedung Chuo Sangi In, Jakarta, dengan agenda membahas dasar negara. 
+
+    <p>  Dari sinilah lahir gagasan <strong>Pancasila</strong> oleh 
+    <span class='tokoh' data-nama='Soekarno'>Soekarno</span>.</p>
+
+    <h3>PPKI</h3>
+    <p>Agustus 1945, Jepang membentuk <strong>PPKI</strong>.Pembentukan PPKI
+Latar Belakang: Setelah BPUPKI dibubarkan pada 7 Agustus 1945, PPKI (Panitia Persiapan Kemerdekaan Indonesia) dibentuk sebagai kelanjutan dari tugas BPUPKI untuk mempersiapkan kemerdekaan Indonesia. 
+
+Tujuan: PPKI bertugas untuk mengesahkan dasar negara dan mempersiapkan struktur pemerintahan Indonesia setelah merdeka. PPKI juga berperan dalam merumuskan Undang-Undang Dasar. 
+
+Anggota: PPKI terdiri dari 21 anggota, yang diketuai oleh  <span class='tokoh' data-nama='Soekarno'>Soekarno</span> dan wakil nya  <span class='tokoh' data-nama='Mohammad Hatta'>Mohammad Hatta</span</p>
+
+    <h3>Peristiwa Rengasdengklok</h3>
+    <p>16 Agustus 1945 dini hari, kelompok pemuda seperti Chaerul Saleh dan Wikana membawa
+      <span class='tokoh' data-nama='Soekarno'>Soekarno</span> dan
+      <span class='tokoh' data-nama='Mohammad Hatta'>Mohammad Hatta</span> ke Rengasdengklok. Mereka menuntut proklamasi segera, tanpa menunggu izin Jepang.</p>
+
+    <h3>Proklamasi 17 Agustus 1945</h3>
+    <p>Pagi hari 17 Agustus, di rumah Laksamana Tadashi Maeda teks proklamasi disusun oleh 
+      <span class='tokoh' data-nama='Ahmad Subardjo'>Ahmad Subardjo</span>, 
+      <span class='tokoh' data-nama='Soekarno'>Soekarno</span>, dan 
+      <span class='tokoh' data-nama='Mohammad Hatta'>Mohammad Hatta</span>.
+      </p>
+    <p>Pukul 10.00 WIB di Jalan Pegangsaan Timur 56, Jakarta, Proklamasi dibacakan oleh Soekarno didampingi Hatta. Rakyat berkumpul, menyaksikan kelahiran Republik Indonesia.</p>
+
+    <h3>Dampak</h3>
+    <ul>
+      <li>Indonesia resmi memproklamasikan kemerdekaan.</li>
+      <li>Terbentuk pemerintahan pertama RI dengan Soekarno sebagai Presiden & Hatta sebagai Wakil Presiden.</li>
+      <li>Menjadi tonggak perjuangan mempertahankan kemerdekaan melawan agresi militer Belanda.</li>
+    </ul>
+
+    <figure>
+      <img src="Indonesian_Independence_Proclamation_1945.png" alt="Suasana Proklamasi 17 Agustus 1945"/>
+      <figcaption>Proklamasi Kemerdekaan Indonesia – simbol kemenangan tekad dan persatuan bangsa.</figcaption>
+    </figure>
+  `
+};
+
+
+    // ====== DATA TOKOH + FOTO ======
+    const tokohData = {
+      "Soekarno": {
+        lahir: "6 Juni 1901", wafat: "21 Juni 1970",
+        bio: "Proklamator dan Presiden pertama Republik Indonesia; orator ulung dan pemimpin pergerakan nasional.",
+        foto: "Presiden_Sukarno.jpg"
+      },
+      "Mohammad Hatta": {
+        lahir: "12 Agustus 1902", wafat: "14 Maret 1980",
+        bio: "Proklamator dan Wakil Presiden pertama; ekonom dan intelektual yang menekankan demokrasi dan koperasi.",
+        foto: "Mohammad_Hatta_1950.jpg"
+      },
+      "Sutan Syahrir": {
+        lahir: "5 Maret 1909", wafat: "9 April 1966",
+        bio: "Perdana Menteri pertama; tokoh pergerakan muda, pendukung diplomasi dan strategi politik modern.",
+        foto: "Sutan_Syahrir_1950.WEBP"
+      },
+      "Ahmad Subardjo": {
+        lahir: "23 Maret 1897", wafat: "15 Desember 1978",
+        bio: "Diplomat, perumus naskah proklamasi, dan Menteri Luar Negeri pertama Republik Indonesia.",
+        foto: "Ahmad_Subardjo.jpg"
+      },
+      "Ki Hajar Dewantara": {
+        lahir: "2 Mei 1889", wafat: "26 April 1959",
+        bio: "Bapak Pendidikan Nasional; pendiri Taman Siswa, pelopor pendidikan kebangsaan.",
+        foto: "Ki_Hadjar_Dewantara.jpg"
+      }
+    };
+
+    // ====== Interaksi Konten ======
+    function showContent(th){
+      const el = document.getElementById('content');
+      el.innerHTML = sejarah[th] || '';
+      document.querySelectorAll('.timeline button').forEach(b=>b.classList.remove('active'));
+      const btn = document.querySelector(`.timeline button[onclick="showContent('${th}')"]`);
+      if(btn) btn.classList.add('active');
+      window.location.hash = th; // memudahkan tautan langsung
+    }
+
+    // Modal tokoh
+    document.getElementById('content').addEventListener('click', e=>{
+      if(e.target.classList.contains('tokoh')){
+        const nama = e.target.dataset.nama;
+        const data = tokohData[nama];
+        if(data){
+          document.getElementById('namaTokoh').textContent = nama;
+          document.getElementById('lahirTokoh').textContent = data.lahir;
+          document.getElementById('wafatTokoh').textContent = data.wafat;
+          document.getElementById('bioTokoh').textContent = data.bio;
+          document.getElementById('fotoTokoh').src = data.foto;
+          document.getElementById('modalTokoh').classList.add('show');
+        }
+      }
+    });
+    function closeModal(){ document.getElementById('modalTokoh').classList.remove('show'); }
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+    // Carousel
+    let index=0; const slides=document.getElementById('slides'); const total=slides.children.length;
+    function showSlide(i){ index=(i+total)%total; slides.style.transform=`translateX(${-index*100}%)`; }
+    function nextSlide(){ showSlide(index+1) }
+    function prevSlide(){ showSlide(index-1) }
+    setInterval(nextSlide, 6500);
+
+    // Load awal berdasarkan hash / default 1930
+    const awal = location.hash?.replace('#','') || '1930';
+    showContent(awal);
+  </script>
+</body>
+</html>
